@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MisBoletos.RemoveRifaPage"
+             Title="Eliminar rifas">
+
+    <VerticalStackLayout Padding="20" Spacing="15">
+
+        <Label Text="Selecciona los números que quieras eliminar"
+               FontAttributes="Bold" />
+
+        <!-- Lista de números con selección múltiple -->
+        <CollectionView x:Name="cvNumeros"
+                        SelectionMode="Multiple"
+                        ItemsSource="{Binding}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="10" Margin="5" BorderColor="Gray" CornerRadius="10">
+                        <Label Text="{Binding .}" FontSize="18" />
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Botones de acción -->
+        <Button Text="Eliminar seleccionados" Clicked="OnEliminarSeleccionadosClick" />
+        <Button Text="Eliminar todos" Clicked="OnEliminarTodosClick" BackgroundColor="Tomato" TextColor="White"/>
+
+        <Label x:Name="lblMensaje" TextColor="Blue"/>
+    </VerticalStackLayout>
+</ContentPage>

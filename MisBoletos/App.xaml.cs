@@ -1,15 +1,15 @@
-﻿namespace MisBoletos
-{
-    public partial class App : Application
-    {
-        public App()
-        {
-            InitializeComponent();
-        }
+﻿namespace MisBoletos;
 
-        protected override Window CreateWindow(IActivationState? activationState)
-        {
-            return new Window(new AppShell());
-        }
+public partial class App : Application
+{
+
+    // Lista accesible desde cualquier página
+    public static List<int> Numeros { get; set; } = new();
+
+    public App()
+    {
+        this.InitializeComponent();
+        MainPage = new NavigationPage(new MainPage()); // Activamos navegación
+
     }
 }

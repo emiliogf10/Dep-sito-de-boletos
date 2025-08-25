@@ -1,24 +1,21 @@
-﻿namespace MisBoletos
+﻿namespace MisBoletos;
+
+public partial class MainPage : ContentPage
 {
-    public partial class MainPage : ContentPage
+    public MainPage()
     {
-        int count = 0;
-
-        public MainPage()
-        {
-            InitializeComponent();
-        }
-
-        private void OnCounterClicked(object? sender, EventArgs e)
-        {
-            count++;
-
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
-        }
+        InitializeComponent();
     }
+
+    private async void OnAddClicked(object sender, EventArgs e)
+        => await Navigation.PushAsync(new AddRifPage());
+
+    private async void OnRemoveClicked(object sender, EventArgs e)
+        => await Navigation.PushAsync(new RemoveRifaPage());
+
+    private async void OnCheckClicked(object sender, EventArgs e)
+        => await Navigation.PushAsync(new CheckNumbersPage());
+
+    private async void OnSorteoClicked(object sender, EventArgs e)
+        => await Navigation.PushAsync(new SorteoPage());
 }
