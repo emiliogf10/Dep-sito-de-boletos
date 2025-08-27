@@ -1,17 +1,47 @@
+using MisBoletos.Models;
+
 namespace MisBoletos;
 
 public partial class RemoveRifaPage : ContentPage
 {
-	public RemoveRifaPage()
-	{
-		InitializeComponent();
-        BindingContext = App.Numeros;
+    public RemoveRifaPage()
+    {
+        InitializeComponent();
     }
 
-    // Eliminar los seleccionados
-    private void OnEliminarSeleccionadosClick(object sender, EventArgs e)
+    protected override async void OnAppearing()
     {
-        var seleccionados = cvNumeros.SelectedItems.Cast<int>().ToList();
+        base.OnAppearing();
+        await RecargarAsync();
+
+    }
+
+    private async Task RecargarAsync()
+    {
+        var lista = await App.Database.GetAllAsync();
+        cvNumeros.ItemsSource = lista;
+
+        if (lista.Count == 0)
+        {
+            lblTitulo.Text = "No hay nada para eliminar";
+            cvNumeros.IsVisible = false;
+            btnDelete.IsEnabled = false;
+            btnDeleteAll.IsEnabled = false;
+        }
+        else
+        {
+            lblTitulo.Text = "Selecciona los números que quieras eliminar";
+            cvNumeros.IsVisible = true;
+            btnDelete.IsEnabled = true;
+            btnDeleteAll.IsEnabled = true;
+           
+            
+        }
+    }
+
+    private async void OnEliminarSeleccionadosClick(object sender, EventArgs e)
+    {
+        var seleccionados = cvNumeros.SelectedItems?.Cast<Boleto>().ToList() ?? new();
 
         if (seleccionados.Count == 0)
         {
@@ -19,29 +49,29 @@ public partial class RemoveRifaPage : ContentPage
             return;
         }
 
-        foreach (var n in seleccionados)
-            App.Numeros.Remove(n);
+        foreach (var b in seleccionados)
+            await App.Database.DeleteAsync(b);
 
+        lblMensaje.Text = seleccionados.Count > 1
+            ? $"Se eliminaron {seleccionados.Count} boletos."
+            : $"Se eliminó {seleccionados.Count} boleto.";
 
-        lblMensaje.Text = seleccionados.Count > 1 ? $"Se eliminaron {seleccionados.Count} boletos." : $"Se eliminó {seleccionados.Count} boleto";
-
-        cvNumeros.SelectedItems.Clear(); // limpiar selección
-        cvNumeros.ItemsSource = null;
-        cvNumeros.ItemsSource = App.Numeros; // refrescar la lista
+        cvNumeros.SelectedItems?.Clear();
+        await RecargarAsync();
     }
 
-    // Eliminar todos
-    private void OnEliminarTodosClick(object sender, EventArgs e)
+    private async void OnEliminarTodosClick(object sender, EventArgs e)
     {
-        if (App.Numeros.Count == 0)
+        var lista = await App.Database.GetAllAsync();
+        if (lista.Count == 0)
         {
             lblMensaje.Text = "La lista ya está vacía.";
             return;
         }
 
-        App.Numeros.Clear();
+        await App.Database.DeleteAllAsync();
         lblMensaje.Text = "Se eliminaron todos los números.";
-        cvNumeros.ItemsSource = null;
-        cvNumeros.ItemsSource = App.Numeros; // refrescar
+        await RecargarAsync();
     }
 }
+

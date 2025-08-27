@@ -14,7 +14,7 @@ public partial class MainPage : ContentPage
         => await Navigation.PushAsync(new RemoveRifaPage());
 
     private async void OnCheckClicked(object sender, EventArgs e)
-        => await Navigation.PushAsync(new CheckNumbersPage());
+        => await Navigation.PushAsync(new CheckRifaPage());
 
     private async void OnSorteoClicked(object sender, EventArgs e)
         => await Navigation.PushAsync(new SorteoPage());

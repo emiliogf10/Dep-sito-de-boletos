@@ -1,31 +1,28 @@
 namespace MisBoletos;
 
-public partial class CheckNumbersPage : ContentPage
+public partial class CheckRifaPage : ContentPage
 {
-	public CheckNumbersPage()
-	{
-		InitializeComponent();
-        ActualizarVista(); // Pasamos la lista directamente
+    public CheckRifaPage()
+    {
+        InitializeComponent();
     }
 
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
         base.OnAppearing();
-        ActualizarVista(); // refrescar cada vez que entres en la página
-    }
+        var lista = await App.Database.GetAllAsync();
 
-    private void ActualizarVista()
-    {
-        if (App.Numeros.Count == 0)
+        if (lista.Count == 0)
         {
-            lblEstado.Text = "Tu lista de boletos está vacía";
+            lblEstado.Text = "Tu lista de boletos está vacía.";
             cvNumeros.ItemsSource = null;
         }
         else
         {
-            lblEstado.Text = $"Tienes {App.Numeros.Count} boletos guardados:";
-            cvNumeros.ItemsSource = null;
-            cvNumeros.ItemsSource = App.Numeros;
+            lblEstado.Text = lblEstado.Text = lista.Count == 1 ? $"Tienes {lista.Count} boleto guardado:" : $"Tienes {lista.Count} boletos guardados:";
+            cvNumeros.ItemsSource = lista;
         }
     }
 }
+
+

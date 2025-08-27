@@ -6,25 +6,24 @@
 
     <VerticalStackLayout Padding="20" Spacing="15">
 
-        <Label Text="Selecciona los números que quieras eliminar"
+        <Label x:Name="lblTitulo"
+               Text="Selecciona los números que quieras eliminar"
                FontAttributes="Bold" />
 
-        <!-- Lista de números con selección múltiple -->
         <CollectionView x:Name="cvNumeros"
-                        SelectionMode="Multiple"
-                        ItemsSource="{Binding}">
+                        SelectionMode="Multiple">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Frame Padding="10" Margin="5" BorderColor="Gray" CornerRadius="10">
-                        <Label Text="{Binding .}" FontSize="18" />
+                        <!-- Como ahora cada item es un Boleto, mostramos su Numero -->
+                        <Label Text="{Binding Numero}" FontSize="18" />
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <!-- Botones de acción -->
-        <Button Text="Eliminar seleccionados" Clicked="OnEliminarSeleccionadosClick" />
-        <Button Text="Eliminar todos" Clicked="OnEliminarTodosClick" BackgroundColor="Tomato" TextColor="White"/>
+        <Button x:Name="btnDelete" Text="Eliminar seleccionados" Clicked="OnEliminarSeleccionadosClick" />
+        <Button x:Name="btnDeleteAll" Text="Eliminar todos" Clicked="OnEliminarTodosClick" BackgroundColor="Tomato" TextColor="White"/>
 
         <Label x:Name="lblMensaje" TextColor="Blue"/>
     </VerticalStackLayout>

@@ -2,23 +2,23 @@ namespace MisBoletos;
 
 public partial class SorteoPage : ContentPage
 {
-	public SorteoPage()
-	{
-		InitializeComponent();
-	}
-
-    private void OnCheckClick(object sender, EventArgs e)
+    public SorteoPage()
     {
-        if (int.TryParse(txtNumero.Text, out int n))
-        {
-            if (App.Numeros.Contains(n))
-                lblResultado.Text = $"¡El número {n} está en tu lista de boletos, enhorabuena!!";
-            else
-                lblResultado.Text = $"El número {n} no está en tu lista de boletos";
-        }
-        else
-            lblResultado.Text = "Introduce un número válido.";
+        InitializeComponent();
+    }
 
-        txtNumero.Text = ""; //Limpiar entrada de texto
+    private async void OnCheckClick(object sender, EventArgs e)
+    {
+        if (!int.TryParse(txtNumero.Text, out int n))
+        {
+            lblResultado.Text = "Introduce un número válido.";
+            return;
+        }
+
+        var encontrado = await App.Database.GetByNumeroAsync(n);
+        if (encontrado != null)
+            lblResultado.Text = $"¡El número {n} es tuyo!";
+        else
+            lblResultado.Text = $"El número {n} no está en tu lista de boletos";
     }
 }

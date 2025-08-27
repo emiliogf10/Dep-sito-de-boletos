@@ -7,20 +7,24 @@ public partial class AddRifPage : ContentPage
 		InitializeComponent();
 	}
 
-    private void OnAddClick(object sender, EventArgs e)
+    private async void OnAddClick(object sender, EventArgs e)
     {
         if (int.TryParse(txtNumero.Text, out int n))
         {
-            if (!App.Numeros.Contains(n))
+            var inserted = await App.Database.InsertIfNotExistsAsync(n);
+            if (inserted > 0)
             {
-                App.Numeros.Add(n);
-                lblMensaje.Text = $"Número {n} añadido a la lista de boletos.";
-                txtNumero.Text = "";
+                lblMensaje.Text = $"Número {n} añadido correctamente a la lista de boletos";
+                txtNumero.Text = string.Empty;
             }
             else
-                lblMensaje.Text = $"El número {n} ya existe.";
+            {
+                lblMensaje.Text = $"El número {n} ya existe en la lista de boletos";
+            }
         }
         else
+        {
             lblMensaje.Text = "Introduce un número válido.";
+        }
     }
 }
