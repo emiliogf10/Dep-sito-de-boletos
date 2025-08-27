@@ -1,23 +1,28 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MisBoletos.CheckRifaPage"
-             Title="Comprobar rifas">
+             Title="Comprobar Boletos">
 
-    <VerticalStackLayout Padding="20" Spacing="15">
+    <Grid Padding="20" RowDefinitions="Auto,*,Auto,Auto">
+
         <Label x:Name="lblEstado"
-               FontSize="20"
-               FontAttributes="Bold"
-               HorizontalOptions="Center"
-               TextColor="DarkBlue"/>
-        <CollectionView x:Name="cvNumeros">
+               Grid.Row="0"
+               FontSize="18"
+               HorizontalOptions="Center" />
+
+        <!-- CollectionView ocupa todo el espacio disponible -->
+        <CollectionView x:Name="cvNumeros"
+                        Grid.Row="1"
+                        ItemsLayout="VerticalList"
+                        VerticalOptions="FillAndExpand">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame Padding="10" Margin="5" BorderColor="Gray" CornerRadius="10">
-                        <Label Text="{Binding Numero}" FontSize="18"/>
+                    <Frame BorderColor="LightGray" Margin="5" Padding="10">
+                        <Label Text="{Binding Numero}" FontSize="18" />
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </VerticalStackLayout>
+
+    </Grid>
 </ContentPage>

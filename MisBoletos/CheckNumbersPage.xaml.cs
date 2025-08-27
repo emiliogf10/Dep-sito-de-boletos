@@ -19,7 +19,7 @@ public partial class CheckRifaPage : ContentPage
         }
         else
         {
-            lblEstado.Text = lblEstado.Text = lista.Count == 1 ? $"Tienes {lista.Count} boleto guardado:" : $"Tienes {lista.Count} boletos guardados:";
+            lblEstado.Text = lblEstado.Text = lista.Count == 1 ? $"Tienes {lista.Count} boleto guardado" : $"Tienes {lista.Count} boletos guardados";
             cvNumeros.ItemsSource = lista;
         }
     }

@@ -1,3 +1,6 @@
+using System;
+using System.Linq;
+using Microsoft.Maui.Controls;
 using MisBoletos.Models;
 
 namespace MisBoletos;
@@ -12,31 +15,27 @@ public partial class RemoveRifaPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await RecargarAsync();
-
+        await RecargarListaAsync();
     }
 
-    private async Task RecargarAsync()
+    private async System.Threading.Tasks.Task RecargarListaAsync()
     {
         var lista = await App.Database.GetAllAsync();
+
         cvNumeros.ItemsSource = lista;
 
         if (lista.Count == 0)
         {
             lblTitulo.Text = "No hay nada para eliminar";
             cvNumeros.IsVisible = false;
-            btnDelete.IsEnabled = false;
-            btnDeleteAll.IsEnabled = false;
         }
         else
         {
             lblTitulo.Text = "Selecciona los números que quieras eliminar";
             cvNumeros.IsVisible = true;
-            btnDelete.IsEnabled = true;
-            btnDeleteAll.IsEnabled = true;
-           
-            
         }
+
+        lblMensaje.Text = "";
     }
 
     private async void OnEliminarSeleccionadosClick(object sender, EventArgs e)
@@ -54,10 +53,10 @@ public partial class RemoveRifaPage : ContentPage
 
         lblMensaje.Text = seleccionados.Count > 1
             ? $"Se eliminaron {seleccionados.Count} boletos."
-            : $"Se eliminó {seleccionados.Count} boleto.";
+            : $"Se eliminó {seleccionados.Count} boleto";
 
-        cvNumeros.SelectedItems?.Clear();
-        await RecargarAsync();
+        cvNumeros.SelectedItems.Clear();
+        await RecargarListaAsync();
     }
 
     private async void OnEliminarTodosClick(object sender, EventArgs e)
@@ -69,9 +68,14 @@ public partial class RemoveRifaPage : ContentPage
             return;
         }
 
+        bool respuesta = await DisplayAlert("Confirmar", "¿Deseas eliminar todos los boletos?", "Sí", "No");
+        if (!respuesta) return;
+
         await App.Database.DeleteAllAsync();
         lblMensaje.Text = "Se eliminaron todos los números.";
-        await RecargarAsync();
+        await RecargarListaAsync();
     }
 }
+
+
 
